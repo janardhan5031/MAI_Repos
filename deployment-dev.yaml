@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  name: mai-experience-frontend-dev-deployment
+  labels:
+    app: mai-experience-frontend-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mai-experience-frontend-dev
+  template:
+    metadata:
+      labels:
+        app: mai-experience-frontend-dev
+    spec:
+      hostname: mai-experience-frontend-dev
+      nodeSelector:
+        noderole: generic
+      containers:
+        - name: mai-experience-frontend-dev
+          image: 408153089286.dkr.ecr.ap-south-1.amazonaws.com/mai-experience-frontend-dev:<VERSION>
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: '1024Mi'
+              cpu: '500m'
+            limits:
+              memory: '2048Mi'
+              cpu: '750m'
+          # readinessProbe:
+          #     httpGet:
+          #       path: /health
+          #       port: 5174
+          #     initialDelaySeconds: 30
+          #     timeoutSeconds: 10
+          # livenessProbe:
+          #     httpGet:
+          #       path: /health
+          #       port: 5174
+          #     initialDelaySeconds: 30
+          #     periodSeconds: 5
+          #     timeoutSeconds: 10
+          #     failureThreshold: 4
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          # env:
+          #   - name: PORT
+          #     valueFrom:
+          #       secretKeyRef:
+          #         key: PORT
+          #         name: dev-mai-experience-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dev
+  name: mai-experience-frontend-dev-svc
+  labels:
+    svc: mai-experience-frontend-dev
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: mai-experience-frontend-dev
