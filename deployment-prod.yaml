@@ -1,0 +1,215 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myipr-prod
+  name: storage-backend-prod-deployment
+  labels:
+    app: storage-backend-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-backend-prod
+  template:
+    metadata:
+      labels:
+        app: storage-backend-prod
+    spec:
+      hostname: storage-backend-prod
+      containers:
+        - name: storage-backend-prod
+          image: 408153089286.dkr.ecr.ap-south-1.amazonaws.com/storage-backend-stg:<VERSION>
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: '2048Mi'
+              cpu: '1'
+            limits:
+              memory: '12288Mi'
+              cpu: '2'
+          readinessProbe:
+              httpGet:
+                path:  /health
+                port: 3000
+              initialDelaySeconds: 30
+              timeoutSeconds: 10
+          livenessProbe:
+              httpGet:
+                path:  /health
+                port: 3000
+              initialDelaySeconds: 30
+              periodSeconds: 5
+              timeoutSeconds: 10
+              failureThreshold: 4
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PORT
+                  name: prod-storage-backend
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  key: HOST
+                  name: prod-storage-backend
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: GOOGLE_CLIENT_ID
+                  name: prod-storage-backend
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: GOOGLE_CLIENT_SECRET
+                  name: prod-storage-backend
+            - name: GOOGLE_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  key: GOOGLE_REDIRECT_URI
+                  name: prod-storage-backend
+            - name: MYIPR_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: MYIPR_BASE_URL
+                  name: prod-storage-backend
+            - name: MYIPR_PROFILE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: MYIPR_PROFILE_URL
+                  name: prod-storage-backend
+            - name: DBX_APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: DBX_APP_KEY
+                  name: prod-storage-backend
+            - name: DBX_APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: DBX_APP_SECRET
+                  name: prod-storage-backend
+            - name: DBX_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  key: DBX_REDIRECT_URI
+                  name: prod-storage-backend
+            - name: ONEDRIVE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: ONEDRIVE_CLIENT_ID
+                  name: prod-storage-backend
+            - name: ONEDRIVE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: ONEDRIVE_CLIENT_SECRET
+                  name: prod-storage-backend
+            - name: ONEDRIVE_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  key: ONEDRIVE_REDIRECT_URI
+                  name: prod-storage-backend
+            - name: ONEDRIVE_SCOPE
+              valueFrom:
+                secretKeyRef:
+                  key: ONEDRIVE_SCOPE
+                  name: prod-storage-backend
+            - name: ONEDRIVE_GRANT_TYPE
+              valueFrom:
+                secretKeyRef:
+                  key: ONEDRIVE_GRANT_TYPE
+                  name: prod-storage-backend
+            - name: AWS_PUBLIC_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_PUBLIC_BUCKET_NAME
+                  name: prod-storage-backend
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_REGION
+                  name: prod-storage-backend
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_ACCESS_KEY_ID
+                  name: prod-storage-backend
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_SECRET_ACCESS_KEY
+                  name: prod-storage-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: myipr-prod
+  name: storage-backend-prod-svc
+  labels:
+    svc: storage-backend-prod
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: storage-backend-prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: prod
+  name: storage-backend-prod-svc
+  labels:
+    svc: storage-backend-prod
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: storage-backend-prod
+---    
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: myipr-prod
+  name: storage-backend-prod-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: storage-backend-prod-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75
+  # - type: Object
+  #   object:
+  #     metric:
+  #       name: requests_per_second
+  #       selector:
+  #         matchLabels:
+  #           app: storage-backend-prod
+  #     describedObject:
+  #       apiVersion: apps/v1
+  #       kind: Deployment
+  #       name: storage-backend-prod-deployment
+  #     target:
+  #       type: Value
+  #       value: 500
