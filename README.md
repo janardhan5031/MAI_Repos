@@ -1,1 +1,2 @@
-# MAI_Repos
+# myipr-hashing-v1
+MyIPR Hashing

@@ -1,0 +1,279 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: stg
+  name: hashing-backend-stg-deployment
+  labels:
+    app: hashing-backend-stg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashing-backend-stg
+  template:
+    metadata:
+      labels:
+        app: hashing-backend-stg
+    spec:
+      hostname: hashing-backend-stg
+      containers:
+        - name: hashing-backend-stg
+          image: 408153089286.dkr.ecr.ap-south-1.amazonaws.com/hashing-backend-stg:<VERSION>
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: '1024Mi'
+              cpu: '500m'
+            limits:
+              memory: '12288Mi'
+              cpu: '2000m'
+          readinessProbe:
+              httpGet:
+                path: /health-check
+                port: 4000
+              initialDelaySeconds: 60
+              timeoutSeconds: 10
+          livenessProbe:
+              httpGet:
+                path: /health-check
+                port: 4000
+              initialDelaySeconds: 30
+              periodSeconds: 5
+              timeoutSeconds: 10
+              failureThreshold: 4
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_URI
+                  name: stg-hashing-backend
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PORT
+                  name: stg-hashing-backend
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_HOST
+                  name: stg-hashing-backend
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PORT
+                  name: stg-hashing-backend
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: stg-hashing-backend
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_USER
+                  name: stg-hashing-backend
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_PASSWORD
+                  name: stg-hashing-backend
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_HOST
+                  name: stg-hashing-backend
+            - name: RABBITMQ_WEB_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_WEB_PORT
+                  name: stg-hashing-backend
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_PORT
+                  name: stg-hashing-backend
+            - name: RABBITMQ_QUEUE_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_QUEUE_NAME
+                  name: stg-hashing-backend
+            - name: HASH_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: HASH_PRIVATE_KEY
+                  name: stg-hashing-backend
+            - name: BLOCKCHAIN_URL
+              valueFrom:
+                secretKeyRef:
+                  key: BLOCKCHAIN_URL
+                  name: stg-hashing-backend
+            - name: ORIGIN
+              valueFrom:
+                secretKeyRef:
+                  key: ORIGIN
+                  name: stg-hashing-backend
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  key: PG_USER
+                  name: stg-hashing-backend
+            - name: PG_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: PG_HOST
+                  name: stg-hashing-backend
+            - name: PG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: PG_DATABASE
+                  name: stg-hashing-backend
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PG_PASSWORD
+                  name: stg-hashing-backend
+            - name: PG_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: PG_PORT
+                  name: stg-hashing-backend
+            - name: AUTH_URL
+              valueFrom:
+                secretKeyRef:
+                  key: AUTH_URL
+                  name: stg-hashing-backend
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_ACCESS_KEY
+                  name: stg-hashing-backend
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_SECRET_KEY
+                  name: stg-hashing-backend
+            - name: S3_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: S3_BUCKET_NAME
+                  name: stg-hashing-backend
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_REGION
+                  name: stg-hashing-backend
+            - name: EMAIL_GATEWAY_URI
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_GATEWAY_URI
+                  name: stg-hashing-backend
+            - name: EMAIL_AUTH_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_AUTH_KEY
+                  name: stg-hashing-backend
+            - name: EMAIL_SERVICE_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_SERVICE_NAME
+                  name: stg-hashing-backend
+            - name: EMAIL_FROM_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_FROM_ADDRESS
+                  name: stg-hashing-backend
+            - name: FILE_PATH
+              valueFrom:
+                secretKeyRef:
+                  key: FILE_PATH
+                  name: stg-hashing-backend
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: SECRET_KEY
+                  name: stg-hashing-backend
+            - name: QR_CODE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: QR_CODE_URL
+                  name: stg-hashing-backend
+            - name: AWS_STORAGE_PUBLIC_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_STORAGE_PUBLIC_BUCKET_NAME
+                  name: stg-hashing-backend    
+            - name: AWS_STORAGE_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_STORAGE_REGION
+                  name: stg-hashing-backend
+            - name: AWS_STORAGE_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_STORAGE_ACCESS_KEY_ID
+                  name: stg-hashing-backend   
+            - name: AWS_STORAGE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_STORAGE_SECRET_ACCESS_KEY
+                  name: stg-hashing-backend   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stg
+  name: hashing-backend-stg-svc
+  labels:
+    svc: hashing-backend-stg
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 4000
+  selector:
+    app: hashing-backend-stg
+---   
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: stg
+  name: hashing-backend-stg-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hashing-backend-stg-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75
+  # - type: Object
+  #   object:
+  #     metric:
+  #       name: requests_per_second
+  #       selector:
+  #         matchLabels:
+  #           app: hashing-backend-stg
+  #     describedObject:
+  #       apiVersion: apps/v1
+  #       kind: Deployment
+  #       name: hashing-backend-stg-deployment
+  #     target:
+  #       type: Value
+  #       value: 500
