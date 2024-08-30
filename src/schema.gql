@@ -1,0 +1,954 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AddEventInput {
+  ageLimit: Float
+  coverPhoto: String!
+  description: String
+  eventName: String!
+  eventType: String!
+  isAgeRestricted: Boolean!
+  isKycMandatory: Boolean
+  isPrivate: Boolean! = false
+  languages: [String!]!
+  tags: [String!]
+  thumbnail: String
+}
+
+input AddTicket {
+  isFreeEntry: Boolean! = false
+  ticketCount: Float!
+  ticketPrice: Float!
+}
+
+type Address {
+  address: String
+  city: String
+  country: String
+  description: String
+  state: String
+  zipcode: String
+}
+
+type AdvertiserDetailsResponse {
+  isOk: Boolean!
+  message: String
+}
+
+type AdvertiserEventDetails {
+  data: [AdvertiserResponse!]
+  filtered: Float
+  total: Float
+}
+
+type AdvertiserResponse {
+  _id: String!
+  isKYCVerified: Boolean
+  orgName: String
+  userId: String
+}
+
+type Artist {
+  _id: String
+  artistImage: String
+  name: String
+  tags: [String!]
+}
+
+type ArtistDetailsResponse {
+  ArtistId: String
+  _id: String
+  artistImage: String
+  customAvatarUrl: String
+  description: String
+  email: String
+  isCustomAvatar: Boolean
+  isKYCVerified: Boolean
+  kycStatus: String
+  lastName: String
+  name: String
+  preferredName: String
+  socialMedia: SocialMedia
+  tags: [String!]
+  userId: String
+}
+
+type AssignKioskResponse {
+  _id: String
+  activeKiosks: [String!]
+  createdBy: String
+  event: String
+  inActiveKiosks: [String!]
+  isOk: Boolean
+  message: String
+  updatedBy: String
+  vendor: VendorDetails
+  venue: String
+}
+
+type AudioLinkMedia {
+  _id: String
+  duration: Float
+  fileName: String
+  link: String
+  rank: Float
+  type: String
+}
+
+enum AudioMediaEnum {
+  AUDIO
+}
+
+type CancelEventResponse {
+  eventId: String
+  isOk: Boolean
+  message: String
+}
+
+input ChanePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+input CreateSlotInput {
+  artistId: String
+  duration: Float
+  endTime: String
+  eventId: String!
+  slotId: String
+  slotTime: String
+  startDate: DateTime
+}
+
+type CustomAvatarResponse {
+  Url: String
+  isCustomAvatar: Boolean
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input DeleteBannerInput {
+  eventId: String!
+  id: String!
+  type: EventType!
+}
+
+type Dimension {
+  x: Float!
+  y: Float!
+}
+
+input Dimensions {
+  x: Float!
+  y: Float!
+}
+
+enum ENUM_ROLE {
+  EVENT_ADVERTISER
+  EVENT_ARTIST
+  EVENT_ORGANIZER
+  EVENT_VENDOR
+}
+
+input EventDateInput {
+  duration: Float
+  endDate: String!
+  endTime: String!
+  isTermsAgreed: Boolean = false
+  startDate: String!
+  startTime: String!
+}
+
+input EventSaleInput {
+  startDate: String
+  startSaleImmediately: Boolean!
+  startTime: String
+}
+
+enum EventStatus {
+  CANCELLED
+  COMPLETED
+  DRAFT
+  LIVE
+  PUBLISHED
+  UNPUBLISHED
+  UPCOMING
+}
+
+enum EventType {
+  ADVERTISER
+  ARTIST
+  ORGANIZER
+  VENDOR
+}
+
+input EventsFilter {
+  categoryId: String
+  eventName: String
+  isLive: Boolean
+  language: String
+  sortBy: String
+}
+
+input EventsFilterInput {
+  name: String
+  status: EventStatus!
+}
+
+type GetAllEventResponse {
+  data: [GetAllEvents!]!
+  filtered: Float
+  total: Float
+}
+
+type GetAllEvents {
+  _id: String!
+  artists: Float
+  bannersCount: Float
+  category: category
+  coverPhoto: String
+  customAvatar: CustomAvatarResponse
+  endDate: DateTime
+  endTimeDate: DateTime
+  eventName: String
+  eventStatus: String
+  filteredTimeSlot: filteredTimeSlot
+  isDeleted: Boolean
+  isFreeEntry: Boolean
+  startDate: DateTime
+  status: String
+  thumbnail: String
+  ticketCount: Float
+  ticketsLeft: Float
+  venue: GetVenuesResponse
+}
+
+type GetArtistPerformanceMode {
+  _id: String
+  artistTrack: [AudioLinkMedia!]!
+  isMicEnabled: Boolean!
+  isMusicEnabled: Boolean!
+  isVideoEnabled: Boolean!
+  name: String
+  videoURL: String
+}
+
+type GetArtistTrackResponse {
+  _id: String
+  artistTrack: [AudioLinkMedia!]
+  name: String
+}
+
+input GetArtistTracksInput {
+  eventId: String!
+}
+
+type GetBannerDetailResponse {
+  getBanners: [GetBannerResponse!]
+  isMeidaExists: Boolean
+}
+
+input GetBannerInput {
+  eventId: String!
+  type: EventType
+}
+
+type GetBannerResponse {
+  _id: String
+  assets: [Linkmedia!]
+  event: String
+  name: String
+  ownerAssets: [Linkmedia!]
+  ownerId: String
+  type: String
+}
+
+type GetEventAvatarResponse {
+  Url: String
+  eventId: String
+  isCustomAvatar: Boolean
+}
+
+type GetEventCategoriesResponse {
+  _id: String!
+  createdAt: DateTime!
+  eventCategory: String!
+  updatedAt: DateTime!
+}
+
+type GetEventDetailsResponse {
+  _id: String!
+  advertisers: [AdvertiserResponse!]
+  ageLimit: Float
+  bannersCount: Float
+  category: JSON!
+  category_name: String
+  coverPhoto: String
+  description: String!
+  duration: Float
+  endDate: DateTime
+  endTimeDate: DateTime
+  eventName: String
+  eventStatus: String
+  isAgeRestricted: Boolean!
+  isFreeEntry: Boolean
+  isKycMandatory: Boolean
+  isPrivate: Boolean!
+  languages: [JSON!]
+  languages_name: [String!]
+  progress: [String!]
+  slots: [GetSlotResponsewithartist!]
+  startDate: DateTime
+  status: String
+  tags: [String!]!
+  thumbnail: String
+  ticketCount: Float
+  ticketPrice: Float
+  ticketsLeft: Float
+  timeSlots: [timeSlot!]
+  vendors: [JSON!]
+  venue: GetVenuesResponse
+}
+
+type GetEventIdResponse {
+  eventId: String
+}
+
+type GetGalleryResponse {
+  _id: String
+  event: String
+  eventName: String
+  media: [MediaResponse!]
+  user: String
+}
+
+type GetKiosksResponse {
+  kioskDetails: [KioskDetails!]!
+}
+
+type GetLanguagesResponse {
+  _id: String
+  createdAt: DateTime
+  language: String
+  updatedAt: DateTime
+}
+
+type GetLatestDatesResponse {
+  endDate: String!
+  endTime: String!
+  startDate: String!
+  startTime: String!
+}
+
+type GetProgressResponse {
+  orgProgress: [String!]
+  progress: [String!]
+}
+
+type GetSlotDates {
+  dates: [DateTime!]!
+}
+
+type GetSlotResponse {
+  _id: String!
+  artistId: String!
+  duration: Float!
+  endDate: DateTime!
+  eventId: String!
+  isDeleted: Boolean!
+  startDate: DateTime!
+}
+
+type GetSlotResponsewithartist {
+  _id: String!
+  artistId: ArtistDetailsResponse!
+  duration: Float!
+  endDate: DateTime
+  eventId: String!
+  isDeleted: Boolean!
+  startDate: DateTime!
+}
+
+type GetSlotTime {
+  time: [String!]
+}
+
+type GetVendorDetailsResponse {
+  response: [VendorDetails!]!
+}
+
+type GetVenuesResponse {
+  _id: String
+  address: String
+  bannersCount: Float
+  isSold: Boolean
+  kioskCount: Float
+  location: Position
+  name: String
+  propCount: Float
+  seats: Float
+  stages: Float
+  userCount: Float
+  venueImage: String
+  venuePrice: Float
+  venuePriceperHour: Float
+  venueType: String
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type KioskDetails {
+  _id: String
+  dimensions: String
+  kioskName: String
+  thumbnailUrl: String
+}
+
+type LatestArtistsDTO {
+  Artists: [Artist!]
+}
+
+input LinkAudioTrack {
+  _id: String!
+  duration: Float
+  fileName: String!
+  link: String!
+  type: AudioMediaEnum!
+}
+
+input LinkMedia {
+  _id: String!
+  dimensions: Dimensions!
+  fileName: String!
+  link: String!
+  type: String!
+}
+
+type Linkmedia {
+  _id: String
+  dimensions: Dimension
+  fileName: String
+  link: String
+  type: String
+}
+
+input Login {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  _id: String
+  access_token: String
+  address: Address
+  avatarGender: String
+  country_code: String
+  coverPhoto: String
+  created_on: String
+  customAvatarUrl: String
+  dob: String
+  email: String
+  first_name: String
+  gender: String
+  is_active: Boolean
+  is_email_verified: Boolean
+  is_kyc_completed: Boolean
+  is_mobile_verified: Boolean
+  kycStatus: String
+  kyc_case_id: String
+  last_name: String
+  mobile_number: String
+  orgName: String
+  org_id: String
+  preferred_name: String
+  profileLink: String
+  profile_assets: profileAssets
+  profile_image: String
+  refresh_token: String
+  roles: [String!]
+  session_id: String
+  socialMedia: SocialMediaResponse
+  thumbnail: String
+}
+
+type MediaResponse {
+  _id: String
+  dimension: PointResponse
+  fileName: String
+  format: String
+  isFavorite: Boolean
+  link: String
+  thumbnail: String
+  type: String
+}
+
+type Mutation {
+  addAdvertisertoEvent(advertiserId: String!, eventId: String!): AdvertiserDetailsResponse!
+  addToFavorite(eventId: String!, mediaId: String!): NewEntryResponse!
+  assignKiosks(input: assignKioskInputType!): AssignKioskResponse!
+  cancelEvent(eventId: String!, isTermsAgreed: Boolean!): CancelEventResponse!
+  changePassword(changePasswordInput: ChanePasswordInput!, isArtist: Boolean = false): NewEntryResponse!
+  createEvent: GetEventIdResponse!
+  createEventSlot(createEventSlot: CreateSlotInput!): slotResponse!
+  deleteAdvertiser(advertiserId: String!, eventId: String!): AdvertiserDetailsResponse!
+  deleteArtistTracks(input: DeleteBannerInput!): UploadBannerResponse!
+  deleteAssets(input: DeleteBannerInput!): UploadBannerResponse!
+  deleteEvent(eventId: String!): CancelEventResponse!
+  deleteSlot(slotId: String!): slotResponse!
+  deleteVendor(eventId: String!, vendorId: String!): AssignKioskResponse!
+  eventCustomAvatar(customAvatarUrl: String!, eventId: String!): NewEntryResponse!
+  eventTicketSale(eventId: String!, saleInput: EventSaleInput!): CancelEventResponse!
+  forgotPassword(forgotPasswordInput: forgotPasswordInput!): NewEntryResponse!
+  inviteRegistration(addInput: addRegistrationInput!, isVendor: Boolean = false): NewEntryResponse!
+  login(isArtist: Boolean = false, login: Login!): LoginResponse!
+  logout: NewEntryResponse!
+  onboardArtist(addArtistInput: addArtistInput!): OnboardArtistResponse!
+  organizeArtistTracks(input: organizeArtistTracksInput!): UploadBannerResponse!
+  publishEvent(eventId: String!): CancelEventResponse!
+  refreshToken: LoginResponse!
+  registration(registration: RegisterVendor!): NewEntryResponse!
+  resendOTP(isArtist: Boolean = false, userId: String!): ResendOtpResponse!
+  resendVerficationLink(input: ResendVerifcationLinkInput!, isVendor: Boolean = false): NewEntryResponse!
+  setArtistPerformanceType(setArtistPerformanceType: SetArtistPerformanceMode!): SetArtistPerformance!
+  setPassword(isArtist: Boolean = false, setPassword: setpasswordInput!): setPasswordResponse!
+  updateArtist(ArtistInput: onboardArtist!): setPasswordResponse!
+  updateEvent(AddEventInput: AddEventInput!, eventId: String!): updateEventResponse!
+  updateGender(avatarCode: String!): NewEntryResponse!
+  updateOrganisation(input: UpdateOrganizationInput!): NewEntryResponse!
+  updateOrganizerProfile(organizerProfileInput: organizerProfileInput!): OrganizerProfileUpdate!
+  updateTicket(eventId: String!, input: AddTicket!): TicketDetailsResponse!
+  uploadArtistTracks(input: UploadArtistTracksInput!): UploadBannerResponse!
+  uploadBanner(input: UploadBannerInput!): UploadBannerResponse!
+  validateForgotPassword(input: ValidateForgotPasswordInput!, isArtist: Boolean = false): NewEntryResponse!
+  validateTransaction(eventId: String!, transcationId: String!): VenueResponse!
+  verifyOTP(isArtist: Boolean = false, verifyOTPInput: VerifyOTPInput!): VerifyMobileResponse!
+}
+
+type NewEntryResponse {
+  _id: String
+  isOk: Boolean
+  message: String
+  userId: String
+}
+
+type OnboardArtistResponse {
+  message: String
+  userId: String!
+  verifyIdentifier: String
+}
+
+type Option {
+  option: String!
+  votes: Float!
+}
+
+input OrganizerInput {
+  organizer: String!
+}
+
+type OrganizerProfileDetails {
+  coverPhoto: String
+  createdAt: DateTime
+  email: String
+  name: String
+  orgName: String
+  socialMedia: SocialMedia
+  thumbnail: String
+  totalEvents: Float
+}
+
+type OrganizerProfileUpdate {
+  coverPhoto: String
+  socialMedia: SocialMediaResponse
+  thumbnail: String
+}
+
+input PaginationInput {
+  limit: Int
+  skip: Int
+}
+
+type PointResponse {
+  x: Float
+  y: Float
+}
+
+type Position {
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+type PreviousEventsResponse {
+  eventsList: [previousEventsList!]
+  totalEvents: Float
+}
+
+type Query {
+  artistProfile: ArtistDetailsResponse!
+  checkKYC(checkKYCInput: checkKYCInput!): kycStatus!
+  checkSaleStatusEvent(eventId: String!): CancelEventResponse!
+  generateReferenceNumber(eventDates: EventDateInput!, eventId: String!, venueId: String!): referenceDetails!
+  getAdvertiserDetails(eventId: String!, name: String): [AdvertiserResponse!]!
+  getAdvertisersbyeventId(eventId: String!, paginationInput: PaginationInput!): AdvertiserEventDetails!
+  getArtistDetails(eventId: String!, name: String, paginationInput: PaginationInput!): [ArtistDetailsResponse!]!
+  getArtistPerformanceType(input: GetArtistTracksInput!): GetArtistPerformanceMode!
+  getArtistTracks(input: GetArtistTracksInput!): [GetArtistTrackResponse!]!
+  getBannerDetails(input: GetBannerInput!): GetBannerDetailResponse!
+  getEventAvatar(eventId: String!): GetEventAvatarResponse!
+  getEventById(eventId: String!): GetEventDetailsResponse!
+  getEventCategories: [GetEventCategoriesResponse!]!
+  getEventCategoryBasedFields(eventId: String!): [String!]!
+  getEventVendors(eventId: String!, paginationInput: PaginationInput!): getEventsVendor!
+  getEvents(filter: EventsFilterInput, paginationInput: PaginationInput!): GetAllEventResponse!
+  getGallery(eventId: String!): [GetGalleryResponse!]!
+  getKioskDetails(eventId: String!): GetKiosksResponse!
+  getLanguages: [GetLanguagesResponse!]!
+  getLatestDates(eventId: String!): GetLatestDatesResponse!
+  getOrganiserName(eventId: String!): JSON!
+  getOrganizerFavorites(input: OrganizerInput!): [organizerFavourites!]!
+  getProfileDetails: LoginResponse!
+  getProgress(eventId: String!): GetProgressResponse!
+  getSlotDates(artistId: String!, eventId: String!): GetSlotDates!
+  getSlotDuration(artistId: String!, date: DateTime!, eventId: String!, slotTime: String!): JSON!
+  getSlotTime(artistId: String!, date: DateTime!, eventId: String!): GetSlotTime!
+  getTicketByEventId(eventId: String): TicketDetailsResponse!
+  getVendorKiosks(eventId: String!, vendorId: String!): JSON!
+  getVendorsDetails(eventId: String!, organizationName: String!): GetVendorDetailsResponse!
+  getVenues(eventDates: EventDateInput!, eventId: String!, paginationInput: PaginationInput!): VenueResponseData!
+  getallslotsbyEventId(eventId: String!, paginationInput: PaginationInput!): allslotsResponse!
+  getslotbyId(slotId: String!): GetSlotResponsewithartist!
+  latestArtistAndGallery(organizer: String!): LatestArtistsDTO!
+  organizerProfile(organizer: String!): OrganizerProfileDetails!
+  previousEvents(organizer: String!, paginationInput: PaginationInput!): PreviousEventsResponse!
+  searchEvents(filter: EventsFilter, organizer: String!, paginationInput: PaginationInput!): SearchEventResponse!
+}
+
+input RegisterVendor {
+  email: String!
+  firstName: String!
+  isTermsAgreed: Boolean!
+  lastName: String!
+  organizationName: String!
+  password: String!
+}
+
+type ResendOtpResponse {
+  message: String
+  userId: String
+  verifyIdentifier: Boolean
+}
+
+input ResendVerifcationLinkInput {
+  email: String!
+}
+
+type Rotation {
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+type Scale {
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+type SearchEventResponse {
+  eventsList: [eventList!]
+  totalEvents: Float
+}
+
+type SetArtistPerformance {
+  _id: String!
+  isMicEnabled: Boolean!
+  isMusicEnabled: Boolean!
+  isVideoEnabled: Boolean!
+  name: String!
+  videoURL: String
+}
+
+input SetArtistPerformanceMode {
+  eventId: String!
+  isMicEnabled: Boolean!
+  isMusicEnabled: Boolean!
+  isVideoEnabled: Boolean!
+  videoURL: String
+}
+
+type SocialMedia {
+  facebookLink: String
+  instaLink: String
+  twitterLink: String
+}
+
+input SocialMediaInput {
+  facebookLink: String
+  instaLink: String
+  twitterLink: String
+}
+
+type SocialMediaResponse {
+  facebookLink: String
+  instaLink: String
+  twitterLink: String
+}
+
+type TicketDetailsResponse {
+  csvLink: String
+  csvName: String
+  eventId: String!
+  isFreeEntry: Boolean!
+  seats: Float!
+  ticketCount: Float!
+  ticketPrice: Float!
+}
+
+type Transform {
+  position: Position!
+  rotation: Rotation!
+  scale: Scale!
+}
+
+input UpdateOrganizationInput {
+  address: String!
+  city: String!
+  country: String!
+  state: String!
+  zipcode: String!
+}
+
+input UploadArtistTracksInput {
+  artistTrack: [LinkAudioTrack!]!
+  eventId: String!
+}
+
+input UploadBannerInput {
+  assets: [LinkMedia!]!
+  eventId: String!
+  type: EventType!
+}
+
+type UploadBannerResponse {
+  isOk: Boolean
+  message: String
+}
+
+type UserResponse {
+  selectedOption: String!
+  userId: String!
+}
+
+input ValidateForgotPasswordInput {
+  identifier: String!
+  otp: String!
+  password: String!
+}
+
+type VendorDetails {
+  _id: String
+  isKYCVerified: Boolean
+  kisoks: [String!]
+  name: String
+  orgName: String
+}
+
+type VendorEventDetails {
+  _id: String
+  isKYCVerified: Boolean
+  kiosksList: [KioskDetails!]
+  orgName: String
+}
+
+type VenueResponse {
+  eventId: String!
+  message: String!
+  status: String!
+}
+
+type VenueResponseData {
+  data: [GetVenuesResponse!]
+  filtered: Float!
+  total: Float!
+}
+
+type VerifyMobileResponse {
+  isEmailVerified: Boolean
+  isMobileVerified: Boolean
+  message: String
+}
+
+input VerifyOTPInput {
+  emailOtp: String
+  mobileOtp: String
+  userId: String!
+}
+
+input addArtistInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  preferredName: String!
+}
+
+input addRegistrationInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  orgName: String!
+}
+
+type allslotsResponse {
+  data: [GetSlotResponse!]
+  filtered: Float
+  total: Float
+}
+
+input assignKioskInputType {
+  eventId: String!
+  kioskIds: [String!]!
+  vendorId: String
+  venueId: String
+}
+
+type category {
+  _id: String
+  eventCategory: String
+  role: String
+}
+
+input checkKYCInput {
+  role: ENUM_ROLE!
+  userId: String!
+}
+
+type eventList {
+  _id: String!
+  coverPhoto: String
+  endDate: DateTime
+  endTime: String
+  eventName: String
+  eventStatus: String
+  startDate: DateTime
+  startTime: String
+  thumbnail: String
+  ticketPrice: Float
+  venue: String
+}
+
+type filteredTimeSlot {
+  endTime: DateTime
+  startTime: DateTime
+}
+
+input forgotPasswordInput {
+  identifier: String!
+}
+
+type getEventsVendor {
+  vendors: [VendorEventDetails!]
+  vendorsCount: String
+}
+
+type kycStatus {
+  dob: String
+  first_name: String
+  gender: String
+  is_kyc_completed: Boolean
+  kyc_case_id: String
+  last_name: String
+  status: String
+}
+
+input onboardArtist {
+  artistImage: String
+  description: String
+  preferredName: String
+  socialMedia: SocialMediaInput
+  tags: [String!]
+}
+
+input organizeArtistTracksInput {
+  eventId: String!
+  trackIds: [String!]!
+}
+
+type organizerFavourites {
+  _id: String
+  dimension: PointResponse
+  eventName: String
+  fileName: String
+  format: String
+  link: String
+  startDate: DateTime
+  thumbnail: String
+  type: String
+}
+
+input organizerProfileInput {
+  coverPhoto: String
+  facebookLink: String
+  instaLink: String
+  thumbnail: String
+  twitterLink: String
+}
+
+type previousEventsList {
+  _id: String!
+  coverPhoto: String
+  endDate: DateTime
+  eventName: String
+  startDate: DateTime
+  thumbnail: String
+  venue: String
+}
+
+type profileAssets {
+  avatar_url: String
+  thumbnail_url: String
+}
+
+type referenceDetails {
+  eventId: String!
+  price: Float!
+  referenceNumber: String!
+}
+
+type setPasswordResponse {
+  data: ArtistDetailsResponse
+  isOk: Boolean!
+  message: String
+}
+
+input setpasswordInput {
+  accessToken: String!
+  isTermsAgreed: Boolean!
+  password: String!
+}
+
+type slotResponse {
+  data: GetSlotResponse
+  isOk: Boolean
+  message: String
+}
+
+type timeSlot {
+  endTime: DateTime!
+  startTime: DateTime!
+}
+
+type updateEventResponse {
+  _id: String
+  isOk: Boolean
+  message: String
+  progress: [String!]
+  status: String
+}

@@ -1,0 +1,407 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  name: pops-event-backend-dev-deployment
+  labels:
+    app: pops-event-backend-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pops-event-backend-dev
+  template:
+    metadata:
+      labels:
+        app: pops-event-backend-dev
+    spec:
+      hostname: pops-event-backend-dev
+      nodeSelector:
+        noderole: generic
+      containers:
+        - name: pops-event-backend-dev
+          image: 408153089286.dkr.ecr.ap-south-1.amazonaws.com/pops-event-backend-dev:<VERSION>
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: '1024Mi'
+              cpu: '500m'
+            limits:
+              memory: '1024Mi'
+              cpu: '500m'
+          readinessProbe:
+              httpGet:
+                path: /health-check
+                port: 4000
+              initialDelaySeconds: 60
+              timeoutSeconds: 10
+          livenessProbe:
+              httpGet:
+                path: /health-check
+                port: 4000
+              initialDelaySeconds: 60
+              periodSeconds: 5
+              timeoutSeconds: 10
+              failureThreshold: 4                                             
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          env:
+            - name: LOG_LEVEL
+              valueFrom:
+                secretKeyRef:
+                  key: LOG_LEVEL
+                  name: dev-pops-event-backend          
+            - name: ENABLE_LOGGING
+              valueFrom:
+                secretKeyRef:
+                  key: ENABLE_LOGGING
+                  name: dev-pops-event-backend 
+            - name: DATABASE_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_CONNECTION
+                  name: dev-pops-event-backend 
+            - name: LOG_PATH
+              valueFrom:
+                secretKeyRef:
+                  key: LOG_PATH
+                  name: dev-pops-event-backend 
+            - name: REDIS_CACHE_TTL
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_CACHE_TTL
+                  name: dev-pops-event-backend          
+            - name: REDIS_CACHE_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_CACHE_AUTHENTICATION
+                  name: dev-pops-event-backend 
+            - name: REDIS_CACHE_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_CACHE_HOST
+                  name: dev-pops-event-backend 
+            - name: REDIS_CACHE_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_CACHE_PORT
+                  name: dev-pops-event-backend
+            - name: VENUE_TTL
+              valueFrom:
+                secretKeyRef:
+                  key: VENUE_TTL
+                  name: dev-pops-event-backend
+            - name: LOGIN_TTL
+              valueFrom:
+                secretKeyRef:
+                  key: LOGIN_TTL
+                  name: dev-pops-event-backend
+            - name: LOAD_TEST
+              valueFrom:
+                secretKeyRef:
+                  key: LOAD_TEST
+                  name: dev-pops-event-backend
+            - name: NOTIFICATION_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: NOTIFICATION_BASE_URL
+                  name: dev-pops-event-backend
+            - name: NOTIFICATION_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: NOTIFICATION_API_KEY
+                  name: dev-pops-event-backend 
+            - name: AUTH_ENGINE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: AUTH_ENGINE_BASE_URL
+                  name: dev-pops-event-backend
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: AUTH_SECRET
+                  name: dev-pops-event-backend 
+            - name: VENDOR_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: VENDOR_AUTH_SECRET
+                  name: dev-pops-event-backend
+            - name: ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: ACCESS_KEY
+                  name: dev-pops-event-backend 
+            - name: SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: SECRET_ACCESS_KEY
+                  name: dev-pops-event-backend
+            - name: REGION
+              valueFrom:
+                secretKeyRef:
+                  key: REGION
+                  name: dev-pops-event-backend
+            - name: BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: BUCKET_NAME
+                  name: dev-pops-event-backend
+            - name: ENABLE_GRAPHQL_PLAYGROUND
+              valueFrom:
+                secretKeyRef:
+                  key: ENABLE_GRAPHQL_PLAYGROUND
+                  name: dev-pops-event-backend 
+            - name: ENABLE_GRAPHQL_INTROSPECTION
+              valueFrom:
+                secretKeyRef:
+                  key: ENABLE_GRAPHQL_INTROSPECTION
+                  name: dev-pops-event-backend
+            - name: ENABLE_GRAPHQL_DEBUG
+              valueFrom:
+                secretKeyRef:
+                  key: ENABLE_GRAPHQL_DEBUG
+                  name: dev-pops-event-backend
+            - name: PEM_FRONTEND_LINK
+              valueFrom:
+                secretKeyRef:
+                  key: PEM_FRONTEND_LINK
+                  name: dev-pops-event-backend
+            - name: PECOM_FRONTEND_LINK
+              valueFrom:
+                secretKeyRef:
+                  key: PECOM_FRONTEND_LINK
+                  name: dev-pops-event-backend
+            - name: GENERATE_URL_EXPIRATION
+              valueFrom:
+                secretKeyRef:
+                  key: GENERATE_URL_EXPIRATION
+                  name: dev-pops-event-backend
+            - name: KAFKA_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_CLIENTID
+                  name: dev-pops-event-backend 
+            - name: KAFKA_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_USERNAME
+                  name: dev-pops-event-backend
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_PASSWORD
+                  name: dev-pops-event-backend
+            - name: KAFKA_ENV
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_ENV
+                  name: dev-pops-event-backend
+            - name: KAFKA_BROKER1
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_BROKER1
+                  name: dev-pops-event-backend
+            - name: KAFKA_BROKER2
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_BROKER2
+                  name: dev-pops-event-backend
+            - name: KAFKA_BROKER3
+              valueFrom:
+                secretKeyRef:
+                  key: KAFKA_BROKER3
+                  name: dev-pops-event-backend
+            - name: SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  key: SASL_MECHANISM
+                  name: dev-pops-event-backend
+            - name: AVATAR_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  key: AVATAR_CLIENTID
+                  name: dev-pops-event-backend
+            - name: AVATAR_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: AVATAR_CLIENT_SECRET
+                  name: dev-pops-event-backend
+            - name: WELCOME_ADVERTISER_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: WELCOME_ADVERTISER_EMAIL
+                  name: dev-pops-event-backend
+            - name: WELCOME_ARTIST_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: WELCOME_ARTIST_EMAIL
+                  name: dev-pops-event-backend
+            - name: ADVERTISER_ADDED_TO_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ADVERTISER_ADDED_TO_EVENT
+                  name: dev-pops-event-backend
+            - name: ADVERTISER_EVENT_CANCELLED
+              valueFrom:
+                secretKeyRef:
+                  key: ADVERTISER_EVENT_CANCELLED
+                  name: dev-pops-event-backend
+            - name: ARTIST_EVENT_CANCELLED
+              valueFrom:
+                secretKeyRef:
+                  key: ARTIST_EVENT_CANCELLED
+                  name: dev-pops-event-backend
+            - name: ORGNIZER_WELCOME_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ORGNIZER_WELCOME_EVENT
+                  name: dev-pops-event-backend
+            - name: ORGANIZER_CANCEL_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ORGANIZER_CANCEL_EVENT
+                  name: dev-pops-event-backend
+            - name: ORGANIZER_UPCOMING_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ORGANIZER_UPCOMING_EVENT
+                  name: dev-pops-event-backend
+            - name: VENDOR_ONBOARDED_TO_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: VENDOR_ONBOARDED_TO_EVENT
+                  name: dev-pops-event-backend
+            - name: ADVERTISER_ONBOARDED_TO_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ADVERTISER_ONBOARDED_TO_EVENT
+                  name: dev-pops-event-backend
+            - name: EVENT_CREATION_SUCCESS
+              valueFrom:
+                secretKeyRef:
+                  key: EVENT_CREATION_SUCCESS
+                  name: dev-pops-event-backend
+            - name: EVENT_TICKET_SALE_START
+              valueFrom:
+                secretKeyRef:
+                  key: EVENT_TICKET_SALE_START
+                  name: dev-pops-event-backend
+            - name: ARTIST_UPCOMING_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ARTIST_UPCOMING_EVENT
+                  name: dev-pops-event-backend
+            - name: ARTIST_ONBOARDED_TO_EVENT
+              valueFrom:
+                secretKeyRef:
+                  key: ARTIST_ONBOARDED_TO_EVENT
+                  name: dev-pops-event-backend
+            - name: CSV_INVITE_REQUEST
+              valueFrom:
+                secretKeyRef:
+                  key: CSV_INVITE_REQUEST
+                  name: dev-pops-event-backend
+            - name: NOTIFICATION_SENDER_ID
+              valueFrom:
+                secretKeyRef:
+                  key: NOTIFICATION_SENDER_ID
+                  name: dev-pops-event-backend
+            - name: AVATAR_URL
+              valueFrom:
+                secretKeyRef:
+                  key: AVATAR_URL
+                  name: dev-pops-event-backend
+            - name: ATTENDEE_BACKEND_URL
+              valueFrom:
+                secretKeyRef:
+                  key: ATTENDEE_BACKEND_URL
+                  name: dev-pops-event-backend
+            - name: PEM_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: PEM_CLIENT_SECRET
+                  name: dev-pops-event-backend
+            - name: AVATAR_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: AVATAR_BUCKET_NAME
+                  name: dev-pops-event-backend
+            - name: AVATAR_BUCKET_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AVATAR_BUCKET_REGION
+                  name: dev-pops-event-backend 
+            - name: PAYMENT_ENGINE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: PAYMENT_ENGINE_URL
+                  name: dev-pops-event-backend
+            - name: PAYMENT_ENGINE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: PAYMENT_ENGINE_API_KEY
+                  name: dev-pops-event-backend
+            - name: PAYMENT_SESSION_DURATION
+              valueFrom:
+                secretKeyRef:
+                  key: PAYMENT_SESSION_DURATION
+                  name: dev-pops-event-backend
+            - name: SKIP_PAYMENT
+              valueFrom:
+                secretKeyRef:
+                  key: SKIP_PAYMENT
+                  name: dev-pops-event-backend
+            - name: TICKET_COUNT_REQUEST
+              valueFrom:
+                secretKeyRef:
+                  key: TICKET_COUNT_REQUEST
+                  name: dev-pops-event-backend
+            - name: EVENT_URL
+              valueFrom:
+                secretKeyRef:
+                  key: EVENT_URL
+                  name: dev-pops-event-backend
+            - name: MAI_HELP_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: MAI_HELP_EMAIL
+                  name: dev-pops-event-backend
+            - name: EVENT_TICKET_REQUEST_COUNT
+              valueFrom:
+                secretKeyRef:
+                  key: EVENT_TICKET_REQUEST_COUNT
+                  name: dev-pops-event-backend
+            - name: ATTENDEE_FRONTEND_URL
+              valueFrom:
+                secretKeyRef:
+                  key: ATTENDEE_FRONTEND_URL
+                  name: dev-pops-event-backend 
+            - name: THROTTLE_TTL
+              valueFrom:
+                secretKeyRef:
+                  key: THROTTLE_TTL
+                  name: dev-pops-event-backend
+            - name: THROTTLE_LIMIT
+              valueFrom:
+                secretKeyRef:
+                  key: THROTTLE_LIMIT
+                  name: dev-pops-event-backend
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dev
+  name: pops-event-backend-dev-svc
+  labels:
+    svc: pops-event-backend-dev
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 4000
+  selector:
+    app: pops-event-backend-dev
